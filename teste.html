@@ -1,0 +1,416 @@
+  <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>A CASA</title>
+    </head>
+    <style>
+
+        /*===== VISUALIZAÇÃO ===== */
+
+        body {
+            margin: 0;
+            background: black;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            color: white;
+        }
+
+        /* ===== MENU ===== */
+        #menu {
+            position: fixed;
+            inset: 0;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/31024bb7-a660-492f-b72c-0a7ccee3bd39/dg1l1wb-de8432c7-66c5-4593-a200-09d290980453.png/v1/fill/w_760,h_1052,q_70,strp/scp_096_by_avargus_dg1l1wb-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTc3MiIsInBhdGgiOiJcL2ZcLzMxMDI0YmI3LWE2NjAtNDkyZi1iNzJjLTBhN2NjZWUzYmQzOVwvZGcxbDF3Yi1kZTg0MzJjNy02NmM1LTQ1OTMtYTIwMC0wOWQyOTA5ODA0NTMucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.QnMgGbEBCBYwxpvmdY99TmFcGvCN0PLODi-ZUgKvuY4");
+        }
+
+        #menu h1 {
+            color: darkred;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px red;
+        }
+
+        #menu h2, #menu h3 {
+            margin: 10px 0;
+            max-width: 600px;
+            text-align: center;
+            font-weight: normal;
+            color: darkred;
+        }
+
+        #menu button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background: black;
+            color: white;
+            border: 2px solid darkred;
+        }
+
+        #menu button:hover {
+            background: darkred;
+        }
+
+        /* ===== JOGO ===== */
+        #game {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            cursor: none;
+            display: none;
+            background-repeat: no-repeat; /* faz com que a imagem fique do tamanho da tela do jogo */
+            background-size: cover; /* faz com que a imagem fique do tamanho da tela do jogo */
+            background-position: center;
+        }
+
+        #lanterna {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.96) 70%);
+        }
+
+        #chave {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: #2e2e2e;
+            border-radius: 4px;
+        }
+
+        #monstro {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgb(0, 0, 0);
+            border-radius: 50%;
+            box-shadow: 0 0 20px red;
+        }
+
+        #mensagem {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            text-shadow: 0 0 10px red;
+        }
+
+        .chave{
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background-color: #2e2e2e;
+            border-radius: 4px;
+        }
+        #hud {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-family: 'Times New Roman', serif;
+            font-size: 18px;
+            z-index: 9999;
+            color: red;
+            background: rgba(0,0,0,0.6);
+            display: none;
+}
+
+
+        /* ===== JUMPSCARE ===== */
+        #jumpscare {
+            position: fixed;
+            inset: 0;
+            background: black;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        #jumpscare div {
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, red, black);
+            animation: piscar 0.1s infinite;
+        }
+
+        @keyframes piscar {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        #jumpscare div {
+            background-image: url('https://i.ytimg.com/vi/Vy3DCSJse60/hqdefault.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #SecretButton {
+            z-index: 9999;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            background: black;
+            color: rgb(59, 1, 1);
+            display: none;
+            opacity: 0.8;
+        }
+    </style>
+    </head>
+
+    <body>
+
+        <!-- MODELAGEM -->
+
+    <!-- MENU -->
+    <div id="menu">
+        <h1>A CASA</h1>
+        <button onclick="iniciarJogo()">INICIAR</button>
+        <h2>CASO ESTEJA PRONTO PRA JOGAR A CASA CLIQUE ACIMA</h2>
+        <h3>Você é um homem que foi designado a investigação de um caso na A CASA, ja havia diversos relatos que esse lugar era amaldiçoado por um monstro que vivia lá dentro.</h3>
+    </div>
+
+
+    <button id="SecretButton">HAHAHA</button>
+    <!-- JOGO -->
+    <div id="game">
+        <div id="lanterna"></div>
+        <div id="monstro"></div>
+        <div id="mensagem">Encontre a chave... antes que ele te encontre...</div>
+    </div>
+
+    <!-- JUMPSCARE -->
+    <div id="jumpscare">
+
+    <div></div>
+
+    </div>
+
+    <!-- HUD -->
+
+    <div id="hud">
+        <p id="hudChaves">Chaves: 0 / 3</p>
+        <p id="HudMapas">SALAS: 1 / 10</p>
+        
+    </div>
+
+        <!-- CONTROLE -->
+    <script>
+
+    // elementos do jogo
+        const menu = document.getElementById("menu");
+        const game = document.getElementById("game");
+        const lanterna = document.getElementById("lanterna");
+        const monstro = document.getElementById("monstro");
+        const mensagem = document.getElementById("mensagem");
+        const jumpscare = document.getElementById("jumpscare");
+        const SecretButton = document.getElementById("SecretButton");
+
+        let jogoAtivo = false;
+        let playerX = 0;
+        let playerY = 0;
+        let monstroX = 0;
+        let monstroY = 0;
+        let totalchaves = 3;
+        let chavesColetadas = 0;
+        let chaves = []
+        let faseAtual = 1;
+        let salasTotais = 3;
+
+    function iniciarJogo() {
+
+        menu.style.display = "none";
+        game.style.display = "block";
+        jogoAtivo = true;
+        document.getElementById("hud").style.display = "block";
+
+        // resetar(toda vez que pega uma chave a contagem é reiniciada ate pegar a terceira)
+        chavesColetadas = 0;
+        chaves.forEach(c => c.remove());
+        chaves = [];
+    
+        ConfigFase();
+        MudancaMapa()
+        atualizarSalasHUD();
+        atualizarChavesHUD();
+    
+        // criar várias chaves
+        for (let i = 0; i < totalchaves; i++) {
+            const novaChave = document.createElement("div");
+            novaChave.classList.add("chave");
+
+            novaChave.style.left = Math.random() * (window.innerWidth - 26) + "px";
+            novaChave.style.top = Math.random() * (window.innerHeight - 26) + "px";
+
+            game.appendChild(novaChave);
+            chaves.push(novaChave);
+
+            novaChave.addEventListener("click", () => {
+                if (!jogoAtivo) return;
+
+                novaChave.remove();
+                chavesColetadas++;
+                atualizarChavesHUD();
+
+             if (chavesColetadas === totalchaves) {
+        setTimeout(ProximaFase, 1500);
+
+      
+    }
+            
+                }
+   
+            );
+            }   
+        moverMonstro();
+        EasterEgg();
+        
+}
+
+
+        // monstro
+        monstroX = Math.random() * (window.innerWidth - 50);
+        monstroY = Math.random() * (window.innerHeight - 50);
+        monstro.style.left = monstroX + "px";
+        monstro.style.top = monstroY + "px";
+
+
+        // faz com que a lanterna siga o mouse
+        document.addEventListener("mousemove", e => {
+            playerX = e.clientX;
+            playerY = e.clientY;
+
+            lanterna.style.left = playerX - 110 + "px";
+            lanterna.style.top = playerY - 110 + "px";
+        });
+
+        function ConfigFase() {
+            if (faseAtual === 1) {
+            totalchaves = 3;
+            mensagem.innerText = "Encontre as chaves... antes que ele te encontre...";
+            monstro.style.display = "block";
+        }
+
+        if (faseAtual === 2) {
+            totalchaves = 5;
+            mensagem.innerText = "Ele está atras de você...";
+        }
+
+        if (faseAtual === 3) {
+            totalchaves = 7;
+            mensagem.innerText = "CORRA!";
+        }
+
+    };
+
+    // mudança de mapa, cada vez que voce termina as chave a imagem muda
+
+        function MudancaMapa() {
+            if (faseAtual == 1) {
+                game.style.backgroundImage = "url(https://img.freepik.com/fotos-gratis/cena-de-horror-com-um-hospital-assustador_23-2150975200.jpg?semt=ais_hybrid&w=740&q=80)";
+        }
+
+        else if (faseAtual == 2) {
+            game.style.backgroundImage = "url(https://www.gamereporter.com.br/wp-content/uploads/2016/10/Room-404.jpg)";
+        }
+
+        else if (faseAtual === 3) {
+        game.style.backgroundImage = "url(https://img.freepik.com/fotos-gratis/casa-assombrada-em-estilo-gotico_23-2151626620.jpg?semt=ais_hybrid&w=740&q=80)";
+        }
+        
+        }
+
+        // próxima fase e vitória
+
+        function ProximaFase() {
+            
+            faseAtual++;
+            if (faseAtual > salasTotais) {
+                vencerJogo();
+            } else {
+                iniciarJogo();
+            }
+            }
+        
+        //HUD
+        function atualizarChavesHUD() {
+        document.getElementById("hudChaves").innerText =
+            `Chaves: ${chavesColetadas} / ${totalchaves}`;
+    }
+
+
+
+    function atualizarSalasHUD() {
+        document.getElementById("HudMapas").innerText =
+            `SALAS: ${faseAtual} / ${salasTotais}`;
+    }
+
+
+        //movimento do monstro
+        function moverMonstro() {
+            if (!jogoAtivo) return;
+
+            const dx = playerX - monstroX;
+            const dy = playerY - monstroY;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+
+            const velocidade = 0 + faseAtual; 
+            monstroX += (dx / dist) * velocidade;
+            monstroY += (dy / dist) * velocidade;
+
+            monstro.style.left = monstroX + "px";
+            monstro.style.top = monstroY + "px";
+
+            if (dist < 40) {
+                jumpscare.style.display = "flex";
+                jogoAtivo = false;
+
+                setTimeout(() => {
+                   SecretButton.style.display = "block";
+            }, 2000);
+            }
+            
+            
+            requestAnimationFrame(moverMonstro);
+           
+        }
+
+        // vitória
+        function vencerJogo() {
+        mensagem.innerText = "Você escapou...por enquanto.";
+        mensagem.style.color = "darkred";
+        jogoAtivo = false;
+        monstro.style.display = "none";
+        game.style.backgroundImage = "url(https://img.freepik.com/fotos-premium/porta-de-terror-de-suspense_87720-62478.jpg)";
+        }
+
+        function alertaSecreto(){ 
+        alert("achou que ia escapar né");
+        alert("você não deveria ter clicado aqui...");
+        alert("...");
+        alert("...");
+        alert("que barulho é esse?");
+        alert("???");
+    
+        
+        
+    }
+  SecretButton.addEventListener("click", alertaSecreto);
+
+//     function faseSecreta() { 
+//         if (alertaSecreto == true)
+//     {}
+// }
+    </script>
+
+    </body>
