@@ -7,6 +7,7 @@
         const mensagem = document.getElementById("mensagem");
         const jumpscare = document.getElementById("jumpscare");
         const SecretButton = document.getElementById("SecretButton");
+        const novaChave = document.createElement("div");
 
         let jogoAtivo = false;
         let playerX = 0;
@@ -38,7 +39,6 @@
     
         // criar várias chaves
         for (let i = 0; i < totalchaves; i++) {
-            const novaChave = document.createElement("div");
             novaChave.classList.add("chave");
 
             novaChave.style.left = Math.random() * (window.innerWidth - 26) + "px";
@@ -103,7 +103,7 @@
             mensagem.innerText = "CORRA!";
         }
 
-        if (faseAtual === 99) {
+        if (faseAtual === 5) {
             totalchaves = 1;
             mensagem.innerText = "Deus te abençoe"
         }
@@ -124,7 +124,7 @@
         else if (faseAtual === 3) {
         game.style.backgroundImage = "url(https://img.freepik.com/fotos-gratis/casa-assombrada-em-estilo-gotico_23-2151626620.jpg?semt=ais_hybrid&w=740&q=80)";
         }
-        else if (faseAtual === 99) {
+        else if (faseAtual === 5) {
             game.style.backgroundImage = "url(https://media.istockphoto.com/id/1163408439/pt/foto/altar-rituals-satanic.jpg?s=612x612&w=0&k=20&c=nrXagh1wNdiUIw7CQUI2nlISyLCiAa3p2wU8qzJPvTs=)"
         }
         }
@@ -163,7 +163,7 @@
             const dy = playerY - monstroY;
             const dist = Math.sqrt(dx*dx + dy*dy);
 
-            const velocidade = 0 + faseAtual; 
+            const velocidade = 0.5 + faseAtual;
             monstroX += (dx / dist) * velocidade;
             monstroY += (dy / dist) * velocidade;
 
@@ -209,8 +209,23 @@
     function faseSecreta() { 
         jogoAtivo = true;
         jumpscare.style.display = "none";
-        faseAtual = 99;
-     
+        faseAtual = 5;
+
+if (faseAtual === 5) {
+        totalchaves = 1;
+        monstroX = Math.random() * (window.innerWidth - 50);
+        monstroY = Math.random() * (window.innerHeight - 50);
+
+        monstro.style.left = monstroX + "px";
+        monstro.style.top = monstroY + "px";
+
+        SecretButton.style.display = "none";
+        lanterna.style.left = playerX - 60 + "px";
+        lanterna.style.top = playerY - 60 + "px";
+
+}
+
+
     
         ConfigFase();
         MudancaMapa();
